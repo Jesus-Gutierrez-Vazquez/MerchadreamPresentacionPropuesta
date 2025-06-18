@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Presentación de Productos & Propuesta de Compra</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* Reset & base */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f9f8f7;
+      color: #333;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 24px 16px 48px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 960px;
+      width: 100%;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.07);
+      padding: 32px 48px 48px;
+      backdrop-filter: blur(6px);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    header h1 {
+      font-weight: 700;
+      font-size: 2.8rem;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #f59e0b 0%, #007bff 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      user-select: none;
+    }
+
+    header p.subtitle {
+      font-weight: 500;
+      font-size: 1.2rem;
+      color: #555;
+    }
+
+    /* Products Section */
+    section.products {
+      margin-bottom: 56px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .product-card {
+      background: rgba(245, 158, 11, 0.1);
+      border-radius: 16px;
+      padding: 24px 20px;
+      box-shadow: 0 4px 12px rgb(245 158 11 / 0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: box-shadow 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .product-card:hover {
+      box-shadow: 0 8px 24px rgb(245 158 11 / 0.4);
+      border-color: #007bff;
+    }
+
+    .product-card h2 {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    .product-description {
+      flex-grow: 1;
+      font-size: 1rem;
+      color: #4b4b4b;
+      margin-bottom: 16px;
+      min-height: 80px;
+    }
+
+    .product-details {
+      font-size: 0.92rem;
+      color: #3c3c3c;
+      margin-bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+    }
+
+    .product-details div {
+      flex: 1 1 45%;
+      font-weight: 600;
+    }
+
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #b45309;
+      text-align: right;
+      user-select: none;
+    }
+
+    .view-images {
+      background: #f59e0b;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .view-images:hover {
+      background: #007bff;
+    }
+
+    /* Popup styles */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      overflow: auto;
+    }
+
+    .popup img {
+      max-width: 100%;
+      max-height: 500px;
+      display: block;
+      margin: auto;
+    }
+
+    .close-popup {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Footer with Contact */
+    footer {
+      text-align: center;
+      border-top: 1px solid #eee;
+      padding-top: 32px;
+      font-size: 0.9rem;
+      color: #666;
+      max-width: 960px;
+      width: 100%;
+      user-select: none;
+    }
+
+    footer a {
+      color: #007bff;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover,
+    footer a:focus {
+      color: #007bff;
+      outline: none;
+    }
+
+    /* Estela de fondo */
+    .estela-fondo {
+      position: fixed;
+      top: -20vh;
+      left: -20vw;
+      width: 140vw;
+      height: 140vh;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(ellipse at 30% 40%, rgba(0, 120, 212, 0.18) 0%, rgba(0, 120, 212, 0.06) 60%, transparent 100%);
+      filter: blur(32px);
+      opacity: 0.8;
+      animation: estela-move 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes estela-move {
+      0% {
+        background-position: 30% 40%;
+        transform: translate(0px, 0px) scale(1);
+      }
+
+      50% {
+        background-position: 35% 45%;
+        transform: translate(10px, 8px) scale(1.03);
+      }
+
+      100% {
+        background-position: 30% 40%;
+        transform: translate(0px, 0px) scale(1);
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      body {
+        padding: 16px 8px 32px;
+      }
+
+      .container {
+        padding: 24px 16px 32px;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+
+      section.products {
+        gap: 24px;
+      }
+
+      .product-details div {
+        flex: 1 1 100%;
+      }
+
+      .product-price {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="estela-fondo"></div>
+  <div class="container" role="main" aria-label="Presentación de productos y propuesta de compra">
+    <header>
+      <div style="text-align: center; margin-bottom: 5px;">
+        <img src="./Assets/imgs/LogoDibujoSlogan-removebg-preview.png" alt="Logo"
+          style="max-width: 350px; width: 100%; height: auto;">
+      </div>
+      <h1>Bobbleheads - Propuesta de Compra</h1>
+      <p>
+        <span class="subtitle"><strong>Sobre nuestro producto:</strong></span>
+        Se trata de figuras de poliresina personalizadas con la imagen de los personajes, pintadas y con las cabezas
+        móviles.
+      </p>
+      <div class="highlight-blocks">
+        <div class="highlight-block">
+          <span class="material-icons" aria-hidden="true"
+            style="font-size:2rem;color:#f59e0b;margin-bottom:8px;">star</span>
+          <p style="margin:0;">
+            Son ideales para campañas de marketing, regalos corporativos, coleccionables y ventas directas en tienda
+            tanto
+            física como online.
+          </p>
+        </div>
+        <div class="highlight-block">
+          <span class="material-icons" aria-hidden="true"
+            style="font-size:2rem;color:#007bff;margin-bottom:8px;">campaign</span>
+          <p style="margin:0;">
+            <strong>Oportunidad de Marketing</strong><br>
+            Nuestros muñecos ofrecen una forma única a la hora de conectar con los aficionados y/o clientes
+          </p>
+        </div>
+      </div>
+      <style>
+        .highlight-blocks {
+          display: flex;
+          gap: 32px;
+          justify-content: center;
+          margin: 32px 0 0 0;
+          flex-wrap: wrap;
+        }
+
+        .highlight-block {
+          background: linear-gradient(120deg, #fef3c7 0%, #e0f2fe 100%);
+          border-radius: 10px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+          padding: 24px 20px;
+          min-width: 240px;
+          flex: 1 1 260px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          transition: box-shadow 0.3s;
+        }
+
+        .highlight-block:hover {
+          box-shadow: 0 6px 18px rgba(0, 123, 255, 0.13);
+        }
+
+        @media (max-width: 600px) {
+          .highlight-blocks {
+            flex-direction: column;
+            gap: 20px;
+          }
+        }
+      </style>
+    </header>
+    <h2
+      style="font-weight:700; font-size:2rem; margin-bottom:28px; text-align:center; background:linear-gradient(135deg,#f59e0b 0%,#007bff 100%); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; user-select:none;">
+      Tipos de productos y precios
+    </h2>
+    <section class="products" aria-label="Listado de productos ofertados">
+    </section>
+  </div>
+
+  <footer>
+    <p>Contacto: Jesús Gutiérrez Vázquez</p>
+    <p>Teléfono: +34 605 195 744</p>
+    <p>Email: direccion@blimenet.com</p>
+    <p>Sitio web en construcción</p>
+  </footer>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <button class="close-popup" onclick="closePopup()">✖️</button>
+      <div class="popup-nav-row">
+        <button id="prevImage" class="nav-button" style="display:none;" onclick="changeImage(-1)">&#10094;</button>
+        <img id="popup-image" src="" alt="Imagen del producto" />
+        <button id="nextImage" class="nav-button" style="display:none;" onclick="changeImage(1)">&#10095;</button>
+      </div>
+    </div>
+    <style>
+      .popup-nav-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .popup-nav-row img {
+        flex: 1 1 auto;
+        max-width: 80vw;
+        max-height: 60vh;
+        margin: 0 12px;
+        border-radius: 8px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        background: #f9f8f7;
+      }
+
+      .nav-button {
+        background: #f59e0b;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        font-size: 2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        user-select: none;
+      }
+
+      .nav-button:hover {
+        background: #007bff;
+      }
+
+      @media (max-width: 600px) {
+        .popup-nav-row img {
+          max-width: 60vw;
+          max-height: 40vh;
+        }
+
+        .nav-button {
+          width: 36px;
+          height: 36px;
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </div>
+
+  <script>
+    const products = [
+      {
+        id: "product1",
+        name: "Bobblehead - Tamaño real",
+        description: "Tu figura gigante, a tamaño real  que te inmortaliza con cada detalle.",
+        dimensions: "Hasta 2 metros",
+        minUnits: "1 unidad",
+        price: 3900,
+        images: ["./Assets/imgs/RealSize/Real01.jpg", "./Assets/imgs/RealSize/Real02.jpeg", "./Assets/imgs/RealSize/Real03.jpeg"]
+      },
+      {
+        id: "product2",
+        name: "Bobblehead 17cm",
+        description: "Perfecto para vender en tienda como producto de retail y promociones.",
+        dimensions: "17 centimetros",
+        minUnits: "50 unidades",
+        price: 11.00,
+        images: ["./Assets/imgs/17cm/Pic01.png", "./Assets/imgs/17cm/Pic02.png", "./Assets/imgs/17cm/Pic03.png"]
+      },
+      {
+        id: "product3",
+        name: "Bobblehead 14cm",
+        description: "Excelente también para vender en tienda como producto de retail y promociones.",
+        dimensions: "14 centimetros",
+        minUnits: "50 unidades",
+        price: 9.00,
+        images: ["./Assets/imgs/14cm/Pic01.png", "./Assets/imgs/14cm/Pic02.png", "./Assets/imgs/14cm/Pic03.png", "./Assets/imgs/14cm/Pic04.png", "./Assets/imgs/14cm/Pic05.png", "./Assets/imgs/14cm/Pic06.png", "./Assets/imgs/14cm/Pic07.png"]
+      },
+      {
+        id: "product4",
+        name: "Bobblehead 10cm",
+        description: "Espléndido para aquellos aficionados que quieran instalarlo en el salpicadero de sus vehículos, ya que lleva un adhesivo en la base.",
+        dimensions: "10 centimetros",
+        minUnits: "50 unidades",
+        price: 7.00,
+        images: ["./Assets/imgs/10cm/Pic01.jpeg", "./Assets/imgs/10cm/Pic02.jpeg", "./Assets/imgs/10cm/Pic03.jpeg"]
+      },
+      {
+        id: "product5",
+        name: "Soportes cepillos de dientes, bolígrafos y tarjetas",
+        description: "De todos los tamaños.",
+        dimensions: "N/A",
+        minUnits: "Varía según tamaño",
+        price: null,
+        images: ["./Assets/imgs/Holders/Pic01.jpg", "./Assets/imgs/Holders/Pic02.jpg", "./Assets/imgs/Holders/Pic03.jpeg"]
+      },
+      {
+        id: "product6",
+        name: "Estatuas y figuras",
+        description: "Ejemplar para nuestros mitos y leyendas.",
+        dimensions: "N/A",
+        minUnits: "Varía según pedido",
+        price: null,
+        images: ["./Assets/imgs/Statues/Pic01.jpg", "./Assets/imgs/Statues/Pic02.png", "./Assets/imgs/Statues/Pic03.jpg", "./Assets/imgs/Statues/Pic04.jpg"]
+      }
+    ];
+
+    function formatPrice(price) {
+      if (price === null) return "-";
+      return price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
+    }
+
+    let currentProductIndex = -1; // Index del producto actual
+    let currentImageIndex = 0; // Index de la imagen actual
+
+    function showPopup(productIndex) {
+      currentProductIndex = productIndex;
+      currentImageIndex = 0; // Reseteamos el índice de la imagen actual
+      const images = products[productIndex].images;
+
+      const popup = document.getElementById('popup');
+      const popupImage = document.getElementById('popup-image');
+      popupImage.src = images[currentImageIndex];
+
+      toggleNavButtons(images.length);
+
+      popup.style.display = 'flex';
+    }
+
+    function toggleNavButtons(totalImages) {
+      document.getElementById('prevImage').style.display = currentImageIndex === 0 ? 'none' : 'inline';
+      document.getElementById('nextImage').style.display = currentImageIndex === totalImages - 1 ? 'none' : 'inline';
+    }
+
+    function changeImage(direction) {
+      const images = products[currentProductIndex].images;
+      currentImageIndex += direction;
+
+      const popupImage = document.getElementById('popup-image');
+      popupImage.src = images[currentImageIndex];
+
+      toggleNavButtons(images.length);
+    }
+
+    function renderProducts() {
+      const container = document.querySelector('section.products');
+      container.innerHTML = '';
+      products.forEach((p, index) => {
+        const card = document.createElement('article');
+        card.className = 'product-card';
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-labelledby', p.id + '-title');
+        card.innerHTML = `
+      <h2 id="${p.id}-title">${p.name}</h2>
+      <p class="product-description">${p.description}</p>
+      <div class="product-details">
+        <div><strong>Dimensiones:</strong> ${p.dimensions}</div>
+        <div><strong>Unidades mínimas:</strong> ${p.minUnits}</div>
+      </div>
+      <div class="product-price">${formatPrice(p.price)}</div>
+      <button class="view-images" onclick="showPopup(${index})">Ver Imágenes</button>
+    `;
+        container.appendChild(card);
+      });
+    }
+
+    function closePopup() {
+      // Ejemplo: oculta el popup con id "popup"
+      const popup = document.getElementById('popup');
+      if (popup) {
+        popup.style.display = 'none';
+      }
+    }
+
+
+    renderProducts();
+  </script>
+</body>
+
+</html>
