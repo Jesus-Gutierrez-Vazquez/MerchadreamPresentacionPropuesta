@@ -274,7 +274,7 @@
         <img src="./Assets/imgs/LogoDibujoSlogan-removebg-preview.png" alt="Logo"
           style="max-width: 350px; width: 100%; height: auto;">
       </div>
-      <h1>Bobbleheads - Propuesta de Compra</h1>
+      <h1>Fabricantes de muñecos personalizados</h1>
       <p>
         <span class="subtitle"><strong>Sobre nuestro producto:</strong></span>
         Se trata de figuras de poliresina personalizadas con la imagen de los personajes, pintadas y con las cabezas
@@ -285,7 +285,7 @@
           <span class="material-icons" aria-hidden="true"
             style="font-size:2rem;color:#f59e0b;margin-bottom:8px;">star</span>
           <p style="margin:0;">
-            Son ideales para campañas de marketing, regalos corporativos, coleccionables y ventas directas en tienda
+            Ideales para campañas de marketing, regalos corporativos, coleccionables y ventas directas en tienda
             tanto
             física como online.
           </p>
@@ -336,8 +336,10 @@
     </header>
     <h2
       style="font-weight:700; font-size:2rem; margin-bottom:28px; text-align:center; background:linear-gradient(135deg,#f59e0b 0%,#007bff 100%); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; user-select:none;">
-      Tipos de productos y precios
+      Tipos de productos y precios netos tarifa
     </h2>
+    <p style="text-align:center; font-size:1.1rem; color:#555; margin-bottom:32px;">
+      En el precio viene incluido el packaging: <strong>Caja de cartón con ventanas y molde de plástico</strong> para sujección del muñeco</p>
     <section class="products" aria-label="Listado de productos ofertados">
     </section>
   </div>
@@ -417,46 +419,46 @@
     const products = [
       {
         id: "product1",
-        name: "Bobblehead - Tamaño real",
+        name: "A tamaño real",
         description: "Tu figura gigante, a tamaño real  que te inmortaliza con cada detalle.",
         dimensions: "Hasta 2 metros",
         minUnits: "1 unidad",
-        price: 3900,
+        price: 9900,
         images: ["./Assets/imgs/RealSize/Real01.jpg", "./Assets/imgs/RealSize/Real02.jpeg", "./Assets/imgs/RealSize/Real03.jpeg"]
       },
       {
         id: "product2",
-        name: "Bobblehead 17cm",
+        name: "17cm",
         description: "Perfecto para vender en tienda como producto de retail y promociones.",
         dimensions: "17 centimetros",
         minUnits: "50 unidades",
-        price: 11.00,
+        price: 13.00,
         images: ["./Assets/imgs/17cm/Pic01.png", "./Assets/imgs/17cm/Pic02.png", "./Assets/imgs/17cm/Pic03.png"]
       },
       {
         id: "product3",
-        name: "Bobblehead 14cm",
+        name: "14cm",
         description: "Excelente también para vender en tienda como producto de retail y promociones.",
         dimensions: "14 centimetros",
         minUnits: "50 unidades",
-        price: 9.00,
-        images: ["./Assets/imgs/14cm/Pic01.png", "./Assets/imgs/14cm/Pic02.png", "./Assets/imgs/14cm/Pic03.png", "./Assets/imgs/14cm/Pic04.png", "./Assets/imgs/14cm/Pic05.png", "./Assets/imgs/14cm/Pic06.png", "./Assets/imgs/14cm/Pic07.png"]
+        price: 12.50,
+        images: ["./Assets/imgs/14cm/Pic03.png", "./Assets/imgs/14cm/Pic04.png", "./Assets/imgs/14cm/Pic05.png", "./Assets/imgs/14cm/Pic06.png", "./Assets/imgs/14cm/Pic07.png"]
       },
       {
         id: "product4",
-        name: "Bobblehead 10cm",
+        name: "10cm",
         description: "Espléndido para aquellos aficionados que quieran instalarlo en el salpicadero de sus vehículos, ya que lleva un adhesivo en la base.",
         dimensions: "10 centimetros",
         minUnits: "50 unidades",
-        price: 7.00,
+        price: 11.50,
         images: ["./Assets/imgs/10cm/Pic01.jpeg", "./Assets/imgs/10cm/Pic02.jpeg", "./Assets/imgs/10cm/Pic03.jpeg"]
       },
       {
         id: "product5",
         name: "Soportes cepillos de dientes, bolígrafos y tarjetas",
         description: "De todos los tamaños.",
-        dimensions: "N/A",
-        minUnits: "Varía según tamaño",
+        dimensions: "Según el tamaño a seleccionar de los anteriores",
+        minUnits: "Varía según el tipo de producto a seleccionar",
         price: null,
         images: ["./Assets/imgs/Holders/Pic01.jpg", "./Assets/imgs/Holders/Pic02.jpg", "./Assets/imgs/Holders/Pic03.jpeg"]
       },
@@ -464,16 +466,34 @@
         id: "product6",
         name: "Estatuas y figuras",
         description: "Ejemplar para nuestros mitos y leyendas.",
-        dimensions: "N/A",
-        minUnits: "Varía según pedido",
+        dimensions: "Según el tamaño a seleccionar de los anteriores",
+        minUnits: "Varía según el tipo de producto a seleccionar",
         price: null,
         images: ["./Assets/imgs/Statues/Pic01.jpg", "./Assets/imgs/Statues/Pic02.png", "./Assets/imgs/Statues/Pic03.jpg", "./Assets/imgs/Statues/Pic04.jpg"]
+      },
+      {
+        id: "product7",
+        name: "Mascotas",
+        description: "Diseño específico para cada club.",
+        dimensions: "En todos los tamaños, el más recomendado, 14cm",
+        minUnits: "250 unidades",
+        price: 11.25,
+        images: ["./Assets/imgs/Mascotas/Pic02.png"]
+      },
+      {
+        id: "product8",
+        name: "Estándar",
+        description: "Pensado para aquellos clubs que no tienen mascota ni jugadores estrella.",
+        dimensions: "14 centímetros",
+        minUnits: "50 unidades",
+        price: 12.50,
+        images: ["./Assets/imgs/Estandar/Pic01.png"]
       }
     ];
 
     function formatPrice(price) {
       if (price === null) return "-";
-      return price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
+      return price.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' }) + " /unidad";
     }
 
     let currentProductIndex = -1; // Index del producto actual
